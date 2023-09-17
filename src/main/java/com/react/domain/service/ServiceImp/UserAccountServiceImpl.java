@@ -77,6 +77,10 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new IllegalArgumentException("Your username must be at least 3 characters long.");
         }
 
+        if (newUser.getLogin().contains(" ")) {
+            throw new IllegalArgumentException("Username cannot contain spaces.");
+        }
+
         // Check Name
         if (newUser.getName() == null || newUser.getName().isEmpty()) {
             throw new IllegalArgumentException("Name is required.");
@@ -89,7 +93,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
         if (newUser.getEmail() == null || newUser.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Email is required.");}
-
 
 
         return userAccountRepository.save(newUser);
