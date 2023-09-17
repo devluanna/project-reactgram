@@ -90,6 +90,13 @@ public class UserAccountController {
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody RegisterDTO data) {
         String standardizedUsername = data.getLogin().toLowerCase();
+        String password = data.getPassword();
+
+        // Validar a senha
+        if (!userAccountService.isValidPassword(password)) {
+            return ResponseEntity.badRequest().body("The password must be at least 8 characters long, including uppercase letters, lowercase letters, numbers and special characters.");
+        }
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
         Dashboard dashboard = new Dashboard();
 

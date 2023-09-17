@@ -15,4 +15,6 @@ public interface UserAccountService {
     UserAccount updatePass(UserAccount authenticatedUserPass);
     List<UserAccount> getAllUsers();
     UserAccount getUserById(Long id);
+
+    boolean isValidPassword(String password);
 }

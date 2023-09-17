@@ -34,6 +34,34 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccountRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
+
+    public boolean isValidPassword(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            return false;
+        }
+
+        if (!password.matches(".*[a-z].*")) {
+            return false;
+        }
+
+        if (!password.matches(".*\\d.*")) {
+            return false;
+        }
+
+        if (!password.matches(".*[!@#$%^&*].*")) {
+            return false;
+        }
+
+        if (password.contains(" ")) {
+            return false;
+        }
+        return true;
+    }
+
     public UserAccount create(UserAccount newUser) {
 
         // Check Nickname
@@ -48,7 +76,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (newUser.getLogin().length() < 3) {
             throw new IllegalArgumentException("Your username must be at least 3 characters long.");
         }
-
 
         // Check Name
         if (newUser.getName() == null || newUser.getName().isEmpty()) {
