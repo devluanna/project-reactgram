@@ -5,6 +5,8 @@ import com.react.domain.model.PhotoUser.LikesPhoto;
 import com.react.domain.model.PhotoUser.PhotoPosted;
 import com.react.domain.model.PhotoUser.TagsPhoto;
 
+import java.util.List;
+
 public interface PhotoService {
 
     PhotoPosted findByIdPhotoPosted(Long idPhotoPosted);
@@ -18,4 +20,6 @@ public interface PhotoService {
     void updatePhoto(PhotoPosted photoPosted);
     // TagsPhoto findByIdTag(List<Long> idTag);
     TagsPhoto findById(Long tagId);
+
+    List<PhotoPosted> getPhotosByUserId(Long id);
 }

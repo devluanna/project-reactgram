@@ -4,15 +4,13 @@ import com.react.domain.model.PhotoUser.CommentsPhoto;
 import com.react.domain.model.PhotoUser.LikesPhoto;
 import com.react.domain.model.PhotoUser.PhotoPosted;
 import com.react.domain.model.PhotoUser.TagsPhoto;
-import com.react.domain.repository.CommentsRepository;
-import com.react.domain.repository.LikesRepository;
-import com.react.domain.repository.PhotoPostedRepository;
-import com.react.domain.repository.TagsRepository;
+import com.react.domain.repository.*;
 import com.react.domain.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -29,6 +27,10 @@ public class PhotoServiceImp implements PhotoService {
 
     @Autowired
     LikesRepository likesRepository;
+
+
+    @Autowired
+    DashboardRepository dashboardRepository;
 
     public PhotoServiceImp(PhotoPostedRepository photoPostedRepository){
         this.photoPostedRepository = photoPostedRepository;
@@ -65,6 +67,11 @@ public class PhotoServiceImp implements PhotoService {
     public TagsPhoto findById(Long tagId) {
 
         return null;
+    }
+
+    @Override
+    public List<PhotoPosted> getPhotosByUserId(Long idDashboard) {
+        return photoPostedRepository.findByIdDashboard(idDashboard);
     }
 
     @Override

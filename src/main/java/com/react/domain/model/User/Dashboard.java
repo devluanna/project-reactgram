@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Component
 @Entity(name = "tb_dashboard")
 public class Dashboard {
@@ -18,15 +19,26 @@ public class Dashboard {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PhotoPosted> photos = new ArrayList<>();
 
+
     public Dashboard() {
         this.login = login;
+        this.id = id;
         this.idDashboard = idDashboard;}
+
+
 
     public String getUser() {
         return login;
     }
     public void setUser(String login) {
         this.login = login;
+    }
+
+    public Long getIdUser() {
+        return id;
+    }
+    public void setIdUser(Long id) {
+        this.id = id;
     }
 
 
@@ -44,4 +56,6 @@ public class Dashboard {
     public void setPhotos(List<PhotoPosted> photos) {
         this.photos = photos;
     }
+
+
 }

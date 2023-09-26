@@ -54,7 +54,6 @@ public class UserAccount implements UserDetails {
         return List.of(new SimpleGrantedAuthority("USERGRAM"));
     }
 
-
     public Long getId() { return id; }
     public void setId (Long id) { this.id = id; }
 
@@ -83,6 +82,10 @@ public class UserAccount implements UserDetails {
 
     public String getProfileImage() {return profileImage;}
     public void setProfileImage(String profileImage) { this.profileImage = profileImage;}
+
+    public Dashboard getDashboard() {
+        return dashboard;
+    }
 
     // Security Details //
     @Override

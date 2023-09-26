@@ -17,4 +17,5 @@ public interface UserAccountService {
     UserAccount getUserById(Long id);
 
     boolean isValidPassword(String password);
+
 }

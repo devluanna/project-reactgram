@@ -2,11 +2,16 @@ package com.react.domain.service.ServiceImp;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
+import com.react.domain.model.PhotoUser.PhotoPosted;
 import com.react.domain.model.User.UserAccount;
+import com.react.domain.repository.PhotoPostedRepository;
 import com.react.domain.repository.UserAccountRepository;
+import com.react.domain.service.PhotoService;
 import com.react.domain.service.UserAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +23,9 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
         this.userAccountRepository = userAccountRepository;
     }
+
+    @Autowired
+    PhotoPostedRepository photoPostedRepository;
 
     @Override
     public UserAccount findById(Long id) {
@@ -61,6 +69,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
         return true;
     }
+
 
     public UserAccount create(UserAccount newUser) {
 

@@ -58,7 +58,6 @@ public class PhotoController {
     @Autowired
     private TagsRepository tagsRepository;
 
-
     @Autowired
     private Dashboard dashboard;
 
@@ -124,14 +123,19 @@ public class PhotoController {
     public ResponseEntity<Dashboard> getDashboard(@PathVariable Long idDashboard, UserAccount userAccount) {
         Dashboard dashboard = dashboardService.findByIdDashboard(idDashboard);
 
+
+
         if (dashboard != null) {
             String user = dashboard.getUser();
 
             if (user != null) {
+
                 String username = user.intern();
+
                 List<PhotoPosted> photos = photoPostedRepository.findByIdDashboard(idDashboard);
                 dashboard.setPhotos(photos);
                 dashboard.setUser(username);
+
             }
 
             return ResponseEntity.ok(dashboard);
@@ -241,11 +245,10 @@ public class PhotoController {
     }
 
     @PostMapping("/upload/{id}")
-    public ResponseEntity uploadToDashboard(@PathVariable Long id, @Valid @RequestParam("file") MultipartFile file, @RequestParam("description")
+    public ResponseEntity uploadToDashboard(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam("description")
     String description, Long idPhotoPosted) {
         try {
-            UserAccount authenticatedUser = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserAccount user = userAccountService.findById(authenticatedUser.getId());
+            UserAccount user = userAccountService.findById(id);
 
             if (!user.getId().equals(id)) {
                 throw new IllegalArgumentException("Access denied!");

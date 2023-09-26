@@ -1,11 +1,15 @@
 package com.react.controller;
 
+import com.react.domain.model.PhotoUser.PhotoPosted;
 import com.react.domain.model.User.Dashboard;
 import com.react.domain.model.User.ResponseDTO.*;
 import com.react.domain.model.User.UserAccount;
 import com.react.domain.repository.DashboardRepository;
+import com.react.domain.repository.PhotoPostedRepository;
 import com.react.domain.repository.UserAccountRepository;
+import com.react.domain.service.DashboardService;
 import com.react.domain.service.ImageUploadService;
+import com.react.domain.service.PhotoService;
 import com.react.domain.service.UserAccountService;
 import com.react.infra.security.TokenService;
 import jakarta.validation.Valid;
@@ -17,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +59,12 @@ public class UserAccountController {
     private TokenService tokenService;
     @Autowired
     private ImageUploadService imageUploadService;
+    @Autowired
+    private PhotoPostedRepository photoPostedRepository;
+    @Autowired
+    private DashboardService dashboardService;
+    @Autowired
+    private PhotoService photoService;
 
 
     @GetMapping("/users")
@@ -69,9 +80,13 @@ public class UserAccountController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserAccount> getUserById(@PathVariable Long id) {
+
+        //Dashboard dashPhotos = dashboardService.findByIdDashboard(id);
         UserAccount user = userAccountService.getUserById(id);
 
         if (user == null) {
+
+
             return ResponseEntity.notFound().build();
         }
 
@@ -80,11 +95,20 @@ public class UserAccountController {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDTO data) {
+    public ResponseEntity login(@RequestBody @Valid LoginDTO data, UserAccount userAccount, Dashboard dashboard) {
         var auth = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var authentication = manager.authenticate(auth);
         var token = tokenService.generateToken((UserAccount) authentication.getPrincipal());
-        return ResponseEntity.ok(new ResponseTokenDTO(token));
+
+        UserAccount authenticatedUser = (UserAccount) authentication.getPrincipal();
+        Long userId = authenticatedUser.getId();
+
+        Long dashboardId = authenticatedUser.getDashboard().getIdDashboard();
+
+       // var userId = ((UserAccount) authentication.getPrincipal()).getId();
+
+       return ResponseEntity.ok(new ResponseTokenDTO(dashboardId, userId, token));
+
     }
 
     @PostMapping("/create")
@@ -150,6 +174,7 @@ public class UserAccountController {
             String filePath = defaultUploadPath + File.separator + fileName;
 
             String newImagePath = imageUploadService.uploadImage(file, filePath);
+
 
             user.setProfileImage(newImagePath);
             userAccountService.update(user);
