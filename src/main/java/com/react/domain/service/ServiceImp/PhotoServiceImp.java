@@ -3,7 +3,6 @@ package com.react.domain.service.ServiceImp;
 import com.react.domain.model.PhotoUser.CommentsPhoto;
 import com.react.domain.model.PhotoUser.LikesPhoto;
 import com.react.domain.model.PhotoUser.PhotoPosted;
-import com.react.domain.model.PhotoUser.TagsPhoto;
 import com.react.domain.repository.*;
 import com.react.domain.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,6 @@ public class PhotoServiceImp implements PhotoService {
 
     @Autowired
     PhotoPostedRepository photoPostedRepository;
-
-    @Autowired
-    TagsRepository tagsRepository;
-
     @Autowired
     CommentsRepository commentsRepository;
 
@@ -52,21 +47,10 @@ public class PhotoServiceImp implements PhotoService {
         return photoPostedRepository.save(photo);
     }
 
-    @Override
-    public TagsPhoto create(TagsPhoto response) {
-        tagsRepository.save(response);
-        return response;
-    }
 
     @Override
     public void updatePhoto(PhotoPosted photoPosted) {
         photoPostedRepository.save(photoPosted);
-    }
-
-    @Override
-    public TagsPhoto findById(Long tagId) {
-
-        return null;
     }
 
     @Override

@@ -136,35 +136,13 @@ public class UserAccountController {
 
 
     @PutMapping("/update/profile/{id}")
-    public ResponseEntity<UserAccount> update(@PathVariable Long id, @RequestBody @Valid UpdateDTO updateDTO) {
+    public ResponseEntity update(@PathVariable Long id,  @RequestParam("file") MultipartFile file, @RequestParam @Valid String login, String name, String bio) {
+        try {
+        UserAccount user = userAccountService.findById(id);
 
-        UserAccount authenticatedUser = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserAccount authenticatedAccount = userAccountService.findById(authenticatedUser.getId());
-
-        if (!authenticatedAccount.getId().equals(id)) {
+        if (!user.getId().equals(id)) {
             throw new IllegalArgumentException("Access denied!");
         }
-
-        String standardizedUsername = updateDTO.getLogin().toLowerCase();
-
-        authenticatedAccount.setLogin(standardizedUsername);
-        authenticatedAccount.setName(updateDTO.getName());
-        authenticatedAccount.setBio(updateDTO.getBio());
-
-        UserAccount update = userAccountService.update(authenticatedAccount);
-
-        return ResponseEntity.ok(update);
-    }
-
-    @PutMapping("/update/profile/image/{id}")
-    public ResponseEntity<String> updateProfileImage(@PathVariable Long id, @Valid @RequestParam("file") MultipartFile file) {
-        try {
-            UserAccount authenticatedUser = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserAccount user = userAccountService.findById(authenticatedUser.getId());
-
-            if (!user.getId().equals(id)) {
-                throw new IllegalArgumentException("Access denied!");
-            }
 
             if (!ALLOWED_IMAGE_TYPES.contains(file.getContentType())) {
                 return ResponseEntity.status(400).body("Unsupported file type");
@@ -175,11 +153,15 @@ public class UserAccountController {
 
             String newImagePath = imageUploadService.uploadImage(file, filePath);
 
+        String standardizedUsername = user.getLogin().toLowerCase();
+        user.setProfileImage(newImagePath);
+        user.setLogin(standardizedUsername);
+        user.setName(name);
+        user.setBio(bio);
 
-            user.setProfileImage(newImagePath);
-            userAccountService.update(user);
+        UserAccount update = userAccountService.update(user);
 
-            return ResponseEntity.ok("Profile image successfully updated!");
+        return ResponseEntity.ok(update);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Internal server error!");

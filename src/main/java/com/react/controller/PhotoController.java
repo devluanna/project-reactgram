@@ -56,9 +56,6 @@ public class PhotoController {
     private LikesRepository likesRepository;
 
     @Autowired
-    private TagsRepository tagsRepository;
-
-    @Autowired
     private Dashboard dashboard;
 
 
@@ -99,31 +96,9 @@ public class PhotoController {
 
     }
 
-    @GetMapping("/photostags/{idPhotoPosted}")
-    public ResponseEntity<PhotoWithTags> getPhotoWithTags(@PathVariable Long idPhotoPosted) {
-        PhotoPosted photoPosted = photoService.findByIdPhotoPosted(idPhotoPosted);
-
-        if (photoPosted != null) {
-            List<TagsPhoto> tags = tagsRepository.findByIdPhotoPosted(idPhotoPosted);
-
-
-            PhotoWithTags photoWithTags = new PhotoWithTags();
-            photoWithTags.setPhotoPosted(photoPosted);
-            photoWithTags.setTags(tags);
-
-            return ResponseEntity.ok(photoWithTags);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
-    }
-
-
     @GetMapping("/dashboard/{idDashboard}")
     public ResponseEntity<Dashboard> getDashboard(@PathVariable Long idDashboard, UserAccount userAccount) {
         Dashboard dashboard = dashboardService.findByIdDashboard(idDashboard);
-
-
 
         if (dashboard != null) {
             String user = dashboard.getUser();
@@ -175,36 +150,6 @@ public class PhotoController {
 
     }
 
-    @PostMapping("/addtags/{idPhotoPosted}")
-    public ResponseEntity createTag(@PathVariable Long idPhotoPosted, @RequestBody @Valid String name, Long idTag) {
-        try {
-            UserAccount authenticatedUser = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserAccount user = userAccountService.findById(authenticatedUser.getId());
-
-            Long photoId = idPhotoPosted;
-            Optional<PhotoPosted> optionalPhoto = photoPostedRepository.findByIdPhotoPosted(photoId);
-
-            if (optionalPhoto.isPresent()) {
-                PhotoPosted photo = optionalPhoto.get();
-
-                TagsPhoto tags = new TagsPhoto();
-                //tags.setTagName(tags.getTagName());
-                tags.setTagName(name);
-                tags.setIdPhotoPosted(photo.getIdPhotoPosted());
-                photo.addTags(tags);
-
-                TagsPhoto savedTag = this.tagsRepository.save(tags);
-
-                return ResponseEntity.ok(savedTag);
-
-            } else {
-                return ResponseEntity.status(404).body("Photo not found");}
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Internal server error!");
-        }
-    }
 
     @PostMapping("/{idPhotoPosted}/comments")
     public ResponseEntity addCommentToPhoto(@PathVariable Long idPhotoPosted, @RequestBody @Valid String commentBox, Long idComment) {

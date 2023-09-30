@@ -38,9 +38,10 @@ public class SecurityConfigurations {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/users")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/user/{id}")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/upload/{id}")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.PUT, "/update/profile/{id}")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/dashboard/{idDashboard}")).permitAll()
-                        .requestMatchers(antMatcher("/update/profile/{id}")).hasRole("USERGRAM")
-                        .requestMatchers(antMatcher("/update/profile/image/{id}")).hasRole("USERGRAM")
+                        //.requestMatchers(antMatcher("/update/profile/{id}")).hasRole("USERGRAM")
+                        //.requestMatchers(antMatcher("/update/profile/image/{id}")).hasRole("USERGRAM")
                         .requestMatchers(antMatcher("/update/profile/password/{id}")).hasRole("USERGRAM")
                         .anyRequest().authenticated()
 

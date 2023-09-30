@@ -39,10 +39,6 @@ public class PhotoPosted {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<LikesPhoto> likes = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<TagsPhoto> tags = new ArrayList<>();
-
-
 
     public PhotoPosted(String imagePath) {
         this.imagePath = imagePath;
@@ -118,12 +114,5 @@ public class PhotoPosted {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    public void setTags(List<TagsPhoto> tags) {
-        this.tags = tags;
-    }
-    public List<TagsPhoto> getTags() {
-        return tags;}
-    public void addTags(TagsPhoto tag) {
-        tags.add(tag);
-    }
+
 }
