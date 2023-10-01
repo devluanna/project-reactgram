@@ -136,7 +136,7 @@ public class UserAccountController {
 
 
     @PutMapping("/update/profile/{id}")
-    public ResponseEntity update(@PathVariable Long id,  @RequestParam("file") MultipartFile file, @RequestParam @Valid String login, String name, String bio) {
+    public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid UpdateDTO updateDTO) {
         try {
         UserAccount user = userAccountService.findById(id);
 
@@ -144,20 +144,11 @@ public class UserAccountController {
             throw new IllegalArgumentException("Access denied!");
         }
 
-            if (!ALLOWED_IMAGE_TYPES.contains(file.getContentType())) {
-                return ResponseEntity.status(400).body("Unsupported file type");
-            }
+        String standardizedUsername = updateDTO.getLogin().toLowerCase();
 
-            String fileName = file.getOriginalFilename();
-            String filePath = defaultUploadPath + File.separator + fileName;
-
-            String newImagePath = imageUploadService.uploadImage(file, filePath);
-
-        String standardizedUsername = user.getLogin().toLowerCase();
-        user.setProfileImage(newImagePath);
         user.setLogin(standardizedUsername);
-        user.setName(name);
-        user.setBio(bio);
+        user.setName(updateDTO.getName());
+        user.setBio(updateDTO.getBio());
 
         UserAccount update = userAccountService.update(user);
 
@@ -168,16 +159,45 @@ public class UserAccountController {
         }
     }
 
+    @PutMapping("/update/profile/image/{id}")
+    public ResponseEntity<String> updateProfileImage(@PathVariable Long id, @Valid @RequestParam("file") MultipartFile file) {
+        try {
+                UserAccount user = userAccountService.findById(id);
+
+
+                if (!user.getId().equals(id)) {
+                throw new IllegalArgumentException("Access denied!");
+            }
+
+            if (!ALLOWED_IMAGE_TYPES.contains(file.getContentType())) {
+                return ResponseEntity.status(400).body("Unsupported file type");
+            }
+
+            String fileName = file.getOriginalFilename();
+            String filePath = defaultUploadPath + File.separator + fileName;
+
+            String newImagePath = imageUploadService.uploadImage(file, filePath);
+
+
+            user.setProfileImage(newImagePath);
+            userAccountService.update(user);
+
+            return ResponseEntity.ok("Profile image successfully updated!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Internal server error!");
+        }
+    }
+
     @PutMapping("/update/profile/password/{id}")
     public ResponseEntity<UserAccount> updatePass(@PathVariable Long id, @RequestBody @Valid PasswordDTO passwordDTO) {
 
-        UserAccount authenticatedPassword = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserAccount authenticatedUserPass = userAccountService.findById(authenticatedPassword.getId());
+        UserAccount user = userAccountService.findById(id);
 
-        authenticatedUserPass.setPassword(passwordDTO.getPassword());
-        authenticatedUserPass.setConfirmPassword(passwordDTO.getConfirmPassword());
+        user.setPassword(passwordDTO.getPassword());
+        user.setConfirmPassword(passwordDTO.getConfirmPassword());
 
-        UserAccount updatePass = userAccountService.updatePass(authenticatedUserPass);
+        UserAccount updatePass = userAccountService.updatePass(user);
         return ResponseEntity.ok(updatePass);
     }
 

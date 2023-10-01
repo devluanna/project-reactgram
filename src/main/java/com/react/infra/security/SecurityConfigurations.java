@@ -41,8 +41,8 @@ public class SecurityConfigurations {
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/update/profile/{id}")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/dashboard/{idDashboard}")).permitAll()
                         //.requestMatchers(antMatcher("/update/profile/{id}")).hasRole("USERGRAM")
-                        //.requestMatchers(antMatcher("/update/profile/image/{id}")).hasRole("USERGRAM")
-                        .requestMatchers(antMatcher("/update/profile/password/{id}")).hasRole("USERGRAM")
+                        .requestMatchers(antMatcher(HttpMethod.PUT,"/update/profile/image/{id}")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.PUT, "/update/profile/password/{id}")).permitAll()
                         .anyRequest().authenticated()
 
                 )
