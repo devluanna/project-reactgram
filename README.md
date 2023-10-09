@@ -6,15 +6,16 @@ Decide to change and develop in Java.
 
 💻 Technologies ​​used:
 - Java 17
-- Springboot
+- Framework SpringBoot
 - PostgreSQL
 - Deploy with Railway
 
 In this system, I tried to apply a **Clean Architecture**.
 Using OOP concepts to bring more security to the software.
 
-🌍 The idea behind the system is: a social network to share your photos with the world.
-This is a project for my development personal as FullStack, using Java on the backend, PostgreSQL database and React.JS on the front end.
+🌍 The idea behind the system is: a social network to share your photos with the world.<br />
+
+✨ This is a project for my development personal as FullStack, using Java on the backend, PostgreSQL database and React.JS on the front end.
 
 ``` mermaid
 
