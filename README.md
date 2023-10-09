@@ -1,8 +1,8 @@
 ## RESTful API using Java/SpringBoot
 
-This project was developed for the React.JS course, where the backend was made with Node.js and Express.
+This project was developed for the React.JS course made by Matheus Battisti, where in the backend he used Node.js and Express to develop the API.
 
-Decide to change and develop in Java.
+How am I improving my backend knowledge and studying Java, I developed the API with Java.
 
 💻 Technologies ​​used:
 - Java 17
