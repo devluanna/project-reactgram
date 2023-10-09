@@ -67,7 +67,7 @@ classDiagram
 
 
 <br />
-💻 Technologies used:<br />
+💻 Technologies used in the frontend:<br />
 React
 <br />
 Javascript
