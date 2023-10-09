@@ -16,7 +16,7 @@ classDiagram
     class UserAccount {
         -name: String
         -email: String
-        -username(login): String
+        -username: String
         -password: String
         -profile_image: String
         -bio: String
@@ -38,13 +38,13 @@ classDiagram
     }
 
     class Like {
-        -username(login): String
+        -username: String
         -profile_image: String
     }
 
     class Comment {
         -comment: String
-        -username(login): String
+        -username: String
         -profile_image: String
     }
 
