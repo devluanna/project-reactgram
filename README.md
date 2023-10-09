@@ -17,6 +17,7 @@ Using OOP concepts to bring more security to the software.
 
 ✨ This is a project for my development personal as FullStack, using Java on the backend, PostgreSQL database and React.JS on the front end.
 
+
 ``` mermaid
 
 classDiagram
@@ -62,3 +63,14 @@ classDiagram
     PhotoPosted "1" *-- "N" Comment
 
 ```
+
+
+✅ Front-End Repository: https://github.com/devluanna/reactgram-front
+<br />
+💻 Technologies used:<br />
+React
+<br />
+Javascript
+<br />
+Axios (for communication with API)
+<br />
