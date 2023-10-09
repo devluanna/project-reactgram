@@ -65,7 +65,7 @@ classDiagram
 ```
 
 
-✅ Front-End Repository: https://github.com/devluanna/reactgram-front
+
 <br />
 💻 Technologies used:<br />
 React
@@ -74,3 +74,4 @@ Javascript
 <br />
 Axios (for communication with API)
 <br />
+✅ Front-End Repository: https://github.com/devluanna/reactgram-front
